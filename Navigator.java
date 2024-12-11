@@ -3,18 +3,29 @@ import java.util.List;
 
 public class Navigator
 {
-    public static void supermarket1()
+    public String shoppingList;
+    public int hours;
+    public int minutes;
+    public int countOfProducts;
+    public double overallDistance;
+    public Navigator (String shoppingList)
+    {
+        this.shoppingList = shoppingList;
+    }
+
+    public void supermarket1()
     {
         Shop supermarket1 = Builder.supermarket1();
-        Client John = Builder.John();
+        //Client John = Builder.John();
         List<Point> products = supermarket1.products;
-        String shoppingItems = John.shoppingItems;
+        String shoppingItems = shoppingList;
         List<Point> JohnsProducts = new ArrayList<>();
         for (Point product : products)
         {
             if (shoppingItems.contains(product.name))
                 JohnsProducts.add(product);
         }
+        countOfProducts = JohnsProducts.size();
         Point start = new Point();
         Point end = new Point();
         Point next = new Point();
@@ -66,7 +77,7 @@ public class Navigator
             }
         }
         JohnsRoute.add(next);
-        double overallDistance = 0;
+        overallDistance = 0;
         System.out.println(JohnsRoute + "\nEach distance and its path:");
         for (int i = 0; i < JohnsRoute.size() - 1; i++)
         {
@@ -86,11 +97,13 @@ public class Navigator
                 }
             }
         }
-        System.out.printf("Overall distance: %.2f\n", overallDistance);
-        double time = overallDistance / .12 / 3600;
-        int hours = (int) time;
-        int minutes = (int) ((time - hours) * 60);
+        overallDistance = overallDistance / 10;
+        double time = (overallDistance / .5 + countOfProducts * 10) / 3600;
+        hours = (int) time;
+        minutes = (int) ((time - hours) * 60);
+        minutes = minutes == 0? 0 : minutes;
+        overallDistance = (int) overallDistance;
+        System.out.printf("Overall distance: %.2f meters \n", overallDistance);
         System.out.printf("Expected time: %d hours, %d minutes\n", hours, minutes);
-        //System.out.println(supermarket1.obstacles);
     }
 }
