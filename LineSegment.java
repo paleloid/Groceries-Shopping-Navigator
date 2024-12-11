@@ -75,7 +75,7 @@ public class LineSegment implements EuclideanDistance
     }
     public double length()
     {
-         return distance(x1, y1, x2, y2);
+        return distance(x1, y1, x2, y2);
     }
     public static boolean inRangeX(Point r, Point p, Point q)
     {
