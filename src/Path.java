@@ -4,7 +4,6 @@ import java.util.List;
 public class Path implements EuclideanDistance
 {
     public List<Point> points = new ArrayList<Point>();
-    //public List<Point> pointsReversed = points.reversed();
     public Path(){}
     public Path(Point p)
     {
