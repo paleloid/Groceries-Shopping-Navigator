@@ -1,3 +1,7 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +12,7 @@ public class Navigator
     public int minutes;
     public int countOfProducts;
     public double overallDistance;
+    public List<Point> finalPath = new ArrayList<>();
     public Navigator (String shoppingList)
     {
         this.shoppingList = shoppingList;
@@ -89,19 +94,33 @@ public class Navigator
                 {
                     overallDistance += distances.get(k)[2];
                     System.out.println(distances.get(k)[2] + ", " + supermarket1.listOfPaths.get(k).points);
+                    finalPath.addAll(supermarket1.listOfPaths.get(k).points);
                 }
                 else if (distances.get(k)[1] == start.innerIndex && distances.get(k)[0] == next.innerIndex)
                 {
                     overallDistance += distances.get(k)[2];
                     System.out.println(distances.get(k)[2] + ", " + supermarket1.listOfPaths.get(k).points.reversed());
+                    finalPath.addAll(supermarket1.listOfPaths.get(k).points.reversed());
                 }
             }
+            finalPath.removeLast();
+        }
+        finalPath.add(next);
+        ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            mapper.writeValue(new File("points.json"), finalPath);
+            System.out.println("Points saved to points.json!");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
         overallDistance = overallDistance / 10;
         double time = (overallDistance / .5 + countOfProducts * 10) / 3600;
         hours = (int) time;
         minutes = (int) ((time - hours) * 60);
-        minutes = minutes == 0? 0 : minutes;
+        minutes = minutes < 1? 1 : minutes;
         overallDistance = (int) overallDistance;
         System.out.printf("Overall distance: %.2f meters \n", overallDistance);
         System.out.printf("Expected time: %d hours, %d minutes\n", hours, minutes);
